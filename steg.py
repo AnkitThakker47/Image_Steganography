@@ -15,15 +15,23 @@ def click():
 	global top3, statement,img_P,path, top1_50
 	if path==0:
 		statement=e.get()
+	if statement=='':
+		messagebox.showerror("ERROR","Text cannot be empty")
+		return
+	def goback():
+		top1_50.deiconify()
+		top3.withdraw()
 	top1_50.withdraw()
 	top3=Toplevel(bg="#02001c")
-	top3.geometry("400x130+500+300")
+	top3.geometry("400x180+500+300")
 	container = Frame(top3, bg='#02001c')  
 	container.grid(row=0, column=0,padx=30,pady=30)    
 	l3=Label(container,text="Select the image in which you wish to encode your data",bg="#02001c",fg="gold")
 	b3=Button(container,text="Choose the files",bg="deepskyblue",fg="#02001c",borderwidth=4,relief=RAISED,command=cdi,width=15)
+	b4=Button(container,text="Back",bg="deepskyblue",fg="#02001c",borderwidth=4,relief=RAISED,command=goback,width=15)
 	l3.grid(pady=10, padx=20)
-	b3.grid(pady=(0,30), padx=20)
+	b3.grid(pady=10, padx=20)
+	b4.grid(pady=10,padx=20)
 
 def read(p):
 	global statement
@@ -63,6 +71,9 @@ def cdi():
 		guid()
 
 def line():
+	def goback():
+		top1.deiconify()
+		top1_50.withdraw()
 	global e,path, l, statement, top1, top1_50
 	top1.withdraw()
 	path=0
@@ -77,12 +88,16 @@ def line():
 	e=Entry(container,width=45,relief="sunken")
 	e.grid(row=0,column=1,columnspan=3)
 	b=Button(top1_50,text="Select image",bg="deepskyblue",fg="#02001c",command=click).grid(row=1,column=0)
+	b1=Button(top1_50,text="Back",bg="deepskyblue",fg="#02001c",command=goback).grid(row=3,column=0,pady=10)
 
 def file_c():
+	def goback():
+		top1.deiconify()
+		top1_50.withdraw()
 	top1.withdraw()
 	global top1_50,l3,b3,b4,path
 	top1_50=Toplevel(bg="#02001c")
-	top1_50.geometry("380x180+500+300")
+	top1_50.geometry("380x230+500+300")
 	path=1
 	container = Frame(top1_50, bg='#02001c')  
 	container.grid(row=0, column=0,padx=30,pady=30)    
@@ -91,19 +106,26 @@ def file_c():
 	l3.grid(pady=10, padx=20)
 	b3.grid(pady=(0,10), padx=20)
 	b=Button(container,text="Select image",bg="deepskyblue",fg="#02001c",command=click,width=15)
+	b1=Button(container,text="Back",bg="deepskyblue",fg="#02001c",command=goback,width=15)
 	b.grid(pady=(10,10), padx=20)
+	b1.grid(pady=(15,10), padx=20)
 	
 def encoding():
+	def goback():
+		top2.deiconify()
+		top1.withdraw()
 	global e, l,statement,top1
 	top2.withdraw()
 	top1=Toplevel(bg="#02001c")
-	top1.geometry("280x150+500+300")
+	top1.geometry("280x140+500+300")
 	container = Frame(top1, bg='#02001c')  
-	container.grid(row=0, column=0,padx=30,pady=30)    
+	container.grid(row=0, column=0,padx=30,pady=15)    
 	b1=Button(container,text="Encode single line message",bg="yellowgreen",fg="black",command=line, width=25)
 	b2=Button(container,text="Encode message from file",bg="yellowgreen",fg="black",command=file_c,width=25)
-	b1.grid(pady=10, padx=20)
-	b2.grid(pady=(0,30), padx=20)
+	b3=Button(container,text="Back",bg="yellowgreen",fg="black",command=goback,width=25)
+	b1.grid(pady=5, padx=20)
+	b2.grid(pady=5, padx=20)
+	b3.grid(pady=5,padx=20)
 
 def d(v):
 	try:
@@ -111,16 +133,18 @@ def d(v):
 		image_path = v
 		imp = image_path.rfind('.')
 		extension = image_path[imp + 1:]
-		if extension.lower() != 'png':
+		if image_path == '':
+			messagebox.showerror("ERROR","Please Select an file")
+		elif extension.lower() != 'png':
 			messagebox.showerror("ERROR","Invalid file type")
-			exit()
-		if not os.path.exists(image_path):
+			#exit()
+		elif not os.path.exists(image_path):
 			messagebox.showerror("ERROR","File does not exists")
-			exit()
+			#exit()
 		else: 
 			l1=dec.decode(image_path)
 			if l1[0]=='True':
-				new_file_path = image_path[0:imp]+'_dec'
+				new_file_path = image_path[0:imp]+'_dec.txt'
 				f=open(new_file_path,'w')
 				f.write(l1[1])
 				f.close()
@@ -135,7 +159,7 @@ def d(v):
 						guid()
 			else:
 				messagebox.showerror("ERROR","Image has no encoded data")
-				exit()
+				#exit()
 	except Exception as e:
 		messagebox.showerror("ERROR","\nIssue: "+str(e))
 		exit()
@@ -147,18 +171,26 @@ def cdfd():
 	d(var)
 
 def decoding():
+	def goback():
+		top2.deiconify()
+		top3.withdraw()
 	top2.withdraw()
 	global top3
 	top3=Toplevel(bg="#02001c")
-	top3.geometry("300x150+500+300")
+	top3.geometry("300x200+500+300")
 	container = Frame(top3, bg='#02001c')  
 	container.grid(row=0, column=0,padx=30,pady=30)    
 	l3=Label(container,text="Select the image you want to decode",bg="#02001c",fg="gold")
 	b3=Button(container,text="Choose the files",bg="deepskyblue",fg="#02001c",borderwidth=4,relief=RAISED,command=cdfd,width=12)
+	b4=Button(container,text="Back",bg="deepskyblue",fg="#02001c",borderwidth=4,relief=RAISED,command=goback,width=12)
 	l3.grid(pady=10, padx=20)
-	b3.grid(pady=(10,10), padx=20)
+	b3.grid(pady=10, padx=20)
+	b4.grid(pady=10, padx=20)
 
 def guid():
+	def goback():
+		root.deiconify()
+		top2.withdraw()
 	root.withdraw()
 	global top2
 	top2=Toplevel(bg="#02001c")
@@ -174,8 +206,9 @@ def guid():
 	L6=Label(top2,text="5.If you select decoding,select the image to be decoded from the image folder",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=5,column=0,columnspan=2)
 	L5=Label(top2,text="6.The decoded information is obtained in a text file present in the same folder.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=6,column=0,columnspan=2)
 	
-	B1=Button(top2,text="Encoding",bg="gold",fg="#02001c",command=encoding).grid(row=7,column=0,pady=10,sticky=E)
+	B1=Button(top2,text="Encoding",bg="gold",fg="#02001c",command=encoding).grid(row=7,column=0,pady=10, sticky=E)
 	B2=Button(top2,text="Decoding",bg="gold",fg="#02001c",command=decoding).grid(row=7,column=1,padx=5,pady=10,sticky=W)
+	B3=Button(top2,text="Back",bg="gold",fg="#02001c",command=goback).grid(row=7,column=2,padx=5,pady=10,sticky=N)
 
 def home():
 	global img 
