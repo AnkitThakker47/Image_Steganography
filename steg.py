@@ -3,6 +3,7 @@ from PIL import ImageTk,Image
 from tkinter import ttk
 from tkinter import filedialog
 from tkinter import messagebox
+import findimage
 import os
 import encoding as ec
 import decoding as dec
@@ -10,6 +11,22 @@ import decoding as dec
 flag=False
 statement=''
 path=0
+store_dir=''
+
+def select_dir():
+	global store_dir
+	store_dir=filedialog.askdirectory()
+
+def fetchImages(words):
+	global store_dir
+	if words=='':
+		messagebox.showerror("ERROR","Please enter words to be searched")
+		return
+	messagebox.showinfo("MESSAGE","Please wait! Pop up will appear once it is finished")
+	if store_dir == '':
+		findimage.getImages(words)
+	else:
+		findimage.getImages(words,store_dir)
 
 def test(cw):
 	def goback():
@@ -20,15 +37,17 @@ def test(cw):
 	newTop.geometry("400x210+500+300")
 	lab=Label(newTop,text="Enter the keywords separated by space",bg="#02001c",fg="gold")
 	getword=Entry(newTop,width=45,relief="sunken")
-	btnFolder=Button(newTop,text="Select folder to save images",bg="deepskyblue",fg="#02001c")
-	btn=Button(newTop,text="Search and save",bg="deepskyblue",fg="#02001c")
+	btnFolder=Button(newTop,text="Select folder to save images",bg="deepskyblue",fg="#02001c",command=select_dir)
+	btn=Button(newTop,text="Search and save",bg="deepskyblue",fg="#02001c",command=lambda: fetchImages(getword.get()))
 	btnback=Button(newTop,text="Back",bg="deepskyblue",fg="#02001c",command=goback)
 	lab.pack(pady=2)
 	getword.pack(pady=2)
 	btnFolder.pack(pady=10)
 	btn.pack(pady=10)
 	btnback.pack(pady=10)
+	getword.delete(0,END)
 	getword.focus()
+	newTop.protocol("WM_DELETE_WINDOW",exit)
 	
 def click():
 	global top3, statement,img_P,path, top1_50
@@ -53,6 +72,7 @@ def click():
 	b3.grid(pady=10, padx=20)
 	b5.grid(pady=10, padx=20)
 	b4.grid(pady=10,padx=20)
+	top3.protocol("WM_DELETE_WINDOW",exit)
 
 def read(p):
 	global statement
@@ -110,6 +130,7 @@ def line():
 	e.grid(row=0,column=1,columnspan=3,pady=3)
 	b=Button(top1_50,text="Select image",bg="deepskyblue",fg="#02001c",command=click).grid(row=1,column=0)
 	b1=Button(top1_50,text="Back",bg="deepskyblue",fg="#02001c",command=goback).grid(row=3,column=0,pady=10)
+	top1_50.protocol("WM_DELETE_WINDOW",exit)
 
 def file_c():
 	def goback():
@@ -130,6 +151,7 @@ def file_c():
 	b1=Button(container,text="Back",bg="deepskyblue",fg="#02001c",command=goback,width=15)
 	b.grid(pady=(10,10), padx=20)
 	b1.grid(pady=(15,10), padx=20)
+	top1_50.protocol("WM_DELETE_WINDOW",exit)
 	
 def encoding():
 	def goback():
@@ -147,6 +169,7 @@ def encoding():
 	b1.grid(pady=5, padx=20)
 	b2.grid(pady=5, padx=20)
 	b3.grid(pady=5,padx=20)
+	top2.protocol("WM_DELETE_WINDOW",exit)
 
 def d(v):
 	try:
@@ -207,6 +230,7 @@ def decoding():
 	l3.grid(pady=10, padx=20)
 	b3.grid(pady=10, padx=20)
 	b4.grid(pady=10, padx=20)
+	top3.protocol("WM_DELETE_WINDOW",exit)
 
 def guid():
 	def goback():
@@ -225,11 +249,14 @@ def guid():
 	L4=Label(top2,text="3.You can enter the text directly or select a text document containing data.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=3,column=0,columnspan=2)
 	L5=Label(top2,text="4.Select image from the images folder to encode data into the image.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=4,column=0,columnspan=2)
 	L6=Label(top2,text="5.If you select decoding,select the image to be decoded from the image folder",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=5,column=0,columnspan=2)
-	L5=Label(top2,text="6.The decoded information is obtained in a text file present in the same folder.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=6,column=0,columnspan=2)
-	
-	B1=Button(top2,text="Encoding",bg="gold",fg="#02001c",command=encoding).grid(row=7,column=0,pady=10, sticky=E)
-	B2=Button(top2,text="Decoding",bg="gold",fg="#02001c",command=decoding).grid(row=7,column=1,padx=5,pady=10,sticky=W)
-	B3=Button(top2,text="Back",bg="gold",fg="#02001c",command=goback).grid(row=7,column=2,padx=5,pady=10,sticky=N)
+	L7=Label(top2,text="6.The decoded information is obtained in a text file present in the same folder.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=6,column=0,columnspan=2)
+	L8=Label(top2,text="7.Use the advanced button to search images based on keywords",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=7,column=0,columnspan=2)
+	L9=Label(top2,text="8.Please wait for pop up after choosing image file since big image file might take time to process.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=8,column=0,columnspan=2)
+
+	B1=Button(top2,text="Encoding",bg="gold",fg="#02001c",command=encoding).grid(row=9,column=0,pady=10, sticky=E)
+	B2=Button(top2,text="Decoding",bg="gold",fg="#02001c",command=decoding).grid(row=9,column=1,padx=5,pady=10,sticky=W)
+	B3=Button(top2,text="Back",bg="gold",fg="#02001c",command=goback).grid(row=9,column=2,padx=5,pady=10,sticky=N)
+	top2.protocol("WM_DELETE_WINDOW",exit)
 
 def home():
 	global img 
