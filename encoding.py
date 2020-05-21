@@ -26,18 +26,19 @@ def encode_into_pixels(i, word, pixels):
 			pixels[k][j] = pixels[k][j][0:7] + word[ind]
 			ind += 1
 
-def encode(statement, image_path):	
+def encode(statement, image_path):
 	statement = "<RNA? "+statement+" ?RNA>"
 	flag, new_file_path = False, ''
 	imp = image_path.rfind('.')
 	extension = image_path[imp + 1:]
 	if extension.lower() != 'jpg' and extension.lower() != 'png':
-		raise Exception("Invalid file type")
+		messagebox.showerror("ERROR","Invalid file type")
+		exit()	
 	elif not os.path.exists(image_path):
-		raise Exception("File does not exists")
+		messagebox.showerror("ERROR","File does not exists")
+		exit()
 	else:
 		new_file_path = image_path[0:imp]+'1.'+'png'
-		
 	image = Image.open(image_path,'r')
 	pix_val = list(image.getdata())
 	pix_val = [list(ele) for ele in pix_val]
@@ -46,10 +47,11 @@ def encode(statement, image_path):
 	characters =list(map(lambda x: format(ord(x),'08b'),values))
 	try:
 		if (width * height) // 9 < len(characters):
-			raise Exception("Text size increases Image file size")
+			messagebox.showerror("ERROR","Text size increases Image file size")
+			exit()
 	except Exception as e:
-		print("\nIssue: ",e)
-		print("Image encoding not successful!!")
+		messagebox.showerror("ERROR","\nIssue: ",e,"Image encoding not successful!!")
+		exit()
 	else:
 		newlist = []
 		for i in range(0, len(pix_val)):

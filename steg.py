@@ -7,123 +7,104 @@ import os
 import encoding as ec
 import decoding as dec
 
-def encoding():
-	global e
-	global l,statement
-	global top1
-	top2.withdraw()
-	top1=Toplevel(bg="#02001c")
-	top1.geometry("+500+300")
-	l=Label(top1)
-	l=Label(top1,text="Enter the encoding text:",bg="#02001c",fg="whitesmoke")
-	l.grid(row=0,column=0)
-	e=Entry(top1,width=45,relief="sunken")
-	e.grid(row=0,column=1,columnspan=3)
-	b=Button(top1,text="View the images",bg="whitesmoke",fg="#02001c",command=click).grid(row=1,column=0)
-
+flag=False
+statement=''
+path=0
 
 def click():
-	top1.withdraw()
-	global top
-	top=Toplevel(bg="#02001c")
-	top.geometry("+400+100")
-	global pr
-	global num
-	l2=Label(top)
-	bf=Button(top)
-	b=Button(top)
-	bb=Button(top)	
-	bselect=Button(top) 
-	
-	p1="D:/COLLEGE SEM 4/PYTHON LAB/Final Mip/sample images/dog.jpg"
-	p2="D:/COLLEGE SEM 4/PYTHON LAB/Final Mip/sample images/flower.jpg"
-	p3="D:/COLLEGE SEM 4/PYTHON LAB/Final Mip/sample images/london.jpg"
-	p4="D:/COLLEGE SEM 4/PYTHON LAB/Final Mip/sample images/lotus.jpg"
-	p5="D:/COLLEGE SEM 4/PYTHON LAB/Final Mip/sample images/newyork.jpg"
-	p6="D:/COLLEGE SEM 4/PYTHON LAB/Final Mip/sample images/rain.jpg"
-	p7="D:/COLLEGE SEM 4/PYTHON LAB/Final Mip/sample images/xmas.jpg"
+	global top3, statement,img_P,path, top1_50
+	if path==0:
+		statement=e.get()
+	top1_50.withdraw()
+	top3=Toplevel(bg="#02001c")
+	top3.geometry("400x130+500+300")
+	container = Frame(top3, bg='#02001c')  
+	container.grid(row=0, column=0,padx=30,pady=30)    
+	l3=Label(container,text="Select the image in which you wish to encode your data",bg="#02001c",fg="gold")
+	b3=Button(container,text="Choose the files",bg="deepskyblue",fg="#02001c",borderwidth=4,relief=RAISED,command=cdi,width=15)
+	l3.grid(pady=10, padx=20)
+	b3.grid(pady=(0,30), padx=20)
 
-	img1= ImageTk.PhotoImage(Image.open(p1))
-	img2= ImageTk.PhotoImage(Image.open(p2))
-	img3= ImageTk.PhotoImage(Image.open(p3))
-	img4= ImageTk.PhotoImage(Image.open(p4))
-	img5= ImageTk.PhotoImage(Image.open(p5))
-	img6= ImageTk.PhotoImage(Image.open(p6))
-	img7= ImageTk.PhotoImage(Image.open(p7))
- 
-	global ilist,p_list
-	ilist=[img1,img2,img3,img4,img5,img6,img7]
-	p_list=[p1,p2,p3,p4,p5,p6,p7]
-	 
-	global img_label	
-	img_label=Label(top,image=img1)
-	l2=Label(top,text="Select the image you want to encode:",bg="#02001c",fg="whitesmoke").grid(row=0,column=0,columnspan=3)
+def read(p):
+	global statement
+	try:
+		file_path = p
+		imp = file_path.rfind('.')
+		extension = file_path[imp + 1:]
+		if extension.lower() != 'txt':
+			messagebox.showerror("ERROR","Invalid file type")
+			exit()	
+		if not os.path.exists(file_path):
+			messagebox.showerror("ERROR","File does not exists")
+			exit()
+		else: 
+			with open(file_path,'r') as f:
+				statement = f.read()
+	except Exception as e:
+		messagebox.showerror("ERROR","\nIssue: ",e)
+		exit()
+
+def cdf():
+	top1_50.filename=filedialog.askopenfilename(initialdir=os.getcwd()+"/sample documents",title="Select a file",filetypes=(("TXT","*.txt"),("All files","*.*")))
+	global var
+	var=top1_50.filename
+	read(var)
+
+def cdi():
+	global top3,img_p,statement
+	top3.filename=filedialog.askopenfilename(initialdir=os.getcwd()+"/sample images",title="Select a file",filetypes=(("JPG","*.jpg"),("All files","*.*")))
+	img_p=top3.filename
+	ec.encode(statement,img_p)
+	r=messagebox.askyesno("Quit","Do you wish to continue?")
+	if r==0:
+		root.quit()
+	else:
+		top3.withdraw()
+		guid()
+
+def line():
+	global e,path, l, statement, top1, top1_50
+	top1.withdraw()
+	path=0
+	top1_50=Toplevel(bg="#02001c")
+	top1_50.geometry("500x150+500+300")
+	container = Frame(top1_50, bg='#02001c')  
+	container.grid(row=0, column=0,padx=30,pady=30)    
+	l=Label(container)
+	l=Label(container,text="Enter the encoding text:",bg="#02001c",fg="gold")
+	l.grid(row=0,column=0)
+	l.config(font=("Arial", 10))
+	e=Entry(container,width=45,relief="sunken")
+	e.grid(row=0,column=1,columnspan=3)
+	b=Button(top1_50,text="Select image",bg="deepskyblue",fg="#02001c",command=click).grid(row=1,column=0)
+
+def file_c():
+	top1.withdraw()
+	global top1_50,l3,b3,b4,path
+	top1_50=Toplevel(bg="#02001c")
+	top1_50.geometry("380x180+500+300")
+	path=1
+	container = Frame(top1_50, bg='#02001c')  
+	container.grid(row=0, column=0,padx=30,pady=30)    
+	l3=Label(container,text="Select the file conatining data you want to encode",bg="#02001c",fg="gold")
+	b3=Button(container,text="Choose the files",bg="deepskyblue",fg="#02001c",borderwidth=4,relief=RAISED,command=cdf,width=15)
+	l3.grid(pady=10, padx=20)
+	b3.grid(pady=(0,10), padx=20)
+	b=Button(container,text="Select image",bg="deepskyblue",fg="#02001c",command=click,width=15)
+	b.grid(pady=(10,10), padx=20)
 	
-	def forward(num):
-		global img_label
-		img_label.grid_forget()
-		img_label=Label(top,image=ilist[num-1])
-		bf=Button(top,text=">>",bg="whitesmoke",fg="#02001c",command=lambda:forward(num+1),width=10)
-		bb=Button(top,text="<<",bg="whitesmoke",fg="#02001c",command=lambda:back(num-1),width=10)
-		if num==len(ilist):
-			bf=Button(top,text=">>",bg="whitesmoke",fg="#02001c",state=DISABLED,width=10)
-		img_label.grid(row=1,column=0,columnspan=3)           
-		bb.grid(row=2,column=0)
-		bf.grid(row=2,column=2)
-		
-	def back(num):
-		global img_label,e
-		img_label.grid_forget()
-		img_label=Label(top,image=ilist[num-1])
-		bf=Button(top,text=">>",bg="whitesmoke",fg="#02001c",command=lambda:forward(num+1),width=10)
-		bb=Button(top,text="<<",bg="whitesmoke",fg="#02001c",command=lambda:back(num-1),width=10)
-		if num==1:
-			bb=Button(top,text="<<",bg="whitesmoke",fg="#02001c",state=DISABLED,width=10)
-		img_label.grid(row=1,column=0,columnspan=3)           
-		bb.grid(row=2,column=0)
-		bf.grid(row=2,column=2)
-		
-	def click_image():
-		if c.get()==options[0]:
-			ec.encode(e.get(),p_list[0])
-		if c.get()==options[1]:
-			ec.encode(e.get(),p_list[1])
-		if c.get()==options[2]:
-			ec.encode(e.get(),p_list[2])	
-		if c.get()==options[3]:
-			ec.encode(e.get(),p_list[3])
-		if c.get()==options[4]:
-			ec.encode(e.get(),p_list[4])
-		if c.get()==options[5]:
-			ec.encode(e.get(),p_list[5])
-		if c.get()==options[6]:
-			ec.encode(e.get(),p_list[6])
-		r=messagebox.askyesno("Quit","Do you wish to continue?")
-		if r==0:
-			#top3.withdraw()
-			root.quit()
-		else:
-			top.withdraw()
-			guid()
-	
-	bb=Button(top,text="<<",command=back,bg="whitesmoke",fg="#02001c",width=10,state=DISABLED)
-	bselect=Button(top,text="Encode",bg="whitesmoke",fg="#02001c",command=click_image,width=10)
-	bf=Button(top,text=">>",bg="whitesmoke",fg="#02001c",command=lambda:forward(2),width=10)
-	label=Label(top,text="Select the image from the drop down menu",bg="#02001c",fg="whitesmoke").grid(row=3,column=1)
-	options=["Dog","Flower","London","Lotus","New York","Rain","Xmas"]
-	c=ttk.Combobox(top)
-	c=ttk.Combobox(top,value=options)
-	c.grid(row=4,column=1)
-	global B,E
-	#B=Button(top,text="Quit",bg="whitesmoke",fg="#02001c",command=top1.quit,width=10).grid(row=5,column=2,padx=5,pady=10)
-	
-	img_label.grid(row=1,column=0,columnspan=3)
-	bb.grid(row=2,column=0,pady=10,sticky=E)
-	bselect.grid(row=5,column=1,padx=5,pady=10)
-	bf.grid(row=2,column=2,padx=10,sticky=W)
-	
-		
-	
+def encoding():
+	global e, l,statement,top1
+	top2.withdraw()
+	top1=Toplevel(bg="#02001c")
+	top1.geometry("280x150+500+300")
+	container = Frame(top1, bg='#02001c')  
+	container.grid(row=0, column=0,padx=30,pady=30)    
+	b1=Button(container,text="Encode single line message",bg="yellowgreen",fg="black",command=line, width=25)
+	b2=Button(container,text="Encode message from file",bg="yellowgreen",fg="black",command=file_c,width=25)
+	b1.grid(pady=10, padx=20)
+	b2.grid(pady=(0,30), padx=20)
+
 def d(v):
 	try:
 		l1=[]
@@ -131,9 +112,11 @@ def d(v):
 		imp = image_path.rfind('.')
 		extension = image_path[imp + 1:]
 		if extension.lower() != 'png':
-			raise Exception("Invalid file type")
+			messagebox.showerror("ERROR","Invalid file type")
+			exit()
 		if not os.path.exists(image_path):
-			raise Exception("File does not exists")
+			messagebox.showerror("ERROR","File does not exists")
+			exit()
 		else: 
 			l1=dec.decode(image_path)
 			if l1[0]=='True':
@@ -142,7 +125,6 @@ def d(v):
 				f.write(l1[1])
 				f.close()
 				response=messagebox.showinfo("Info","Image decoded successfully, New text file path: "+new_file_path+".txt")
-				#if response=="ok":
 				if response =="ok":
 					r=messagebox.askyesno("Quit","Do you wish to continue?")
 					if r==0:
@@ -152,26 +134,29 @@ def d(v):
 						top3.withdraw()
 						guid()
 			else:
-				print('Image has no encoded data')
+				messagebox.showerror("ERROR","Image has no encoded data")
+				exit()
 	except Exception as e:
-		print("\nIssue: ", e)
-
-
-def cd():
+		messagebox.showerror("ERROR","\nIssue: "+str(e))
+		exit()
+		
+def cdfd():
 	top3.filename=filedialog.askopenfilename(initialdir="/sample images",title="Select a file",filetypes=(("PNG","*.png"),("All files","*.*")))
 	global var
 	var=top3.filename
 	d(var)
-	
+
 def decoding():
 	top2.withdraw()
 	global top3
 	top3=Toplevel(bg="#02001c")
-	top3.geometry("+500+300")
-	global l3,b3,b4
-	l3=Label(top3,text="Select the image you want to decode",bg="#02001c",fg="whitesmoke").grid(row=0,column=0,columnspan=3)
-	b3=Button(top3,text="Choose the files",bg="whitesmoke",fg="#02001c",borderwidth=4,relief=RAISED,command=cd,width=12).grid(row=1,column=1)
-	#b4=Button(top3,text="Quit",bg="whitesmoke",fg="#02001c",command=top3.quit,width=10).grid(row=1,column=1)
+	top3.geometry("300x150+500+300")
+	container = Frame(top3, bg='#02001c')  
+	container.grid(row=0, column=0,padx=30,pady=30)    
+	l3=Label(container,text="Select the image you want to decode",bg="#02001c",fg="gold")
+	b3=Button(container,text="Choose the files",bg="deepskyblue",fg="#02001c",borderwidth=4,relief=RAISED,command=cdfd,width=12)
+	l3.grid(pady=10, padx=20)
+	b3.grid(pady=(10,10), padx=20)
 
 def guid():
 	root.withdraw()
@@ -180,30 +165,31 @@ def guid():
 	top2.geometry("+300+200")
 	B1=Button(top2)
 	B2=Button(top2)
-	L1=Label(top2,text="GUIDELINES OF THE PROJECT",bg="#02001c",fg="whitesmoke",font=(("Arial",20,"bold underline"))).grid(row=0,column=0,columnspan=2)
-	L2=Label(top2,text="1.Select encoding button for encoding the image or decoding button for decoding.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=1,column=0,columnspan=2)
-	L3=Label(top2,text="2.If you select encoding,enter the text you want to encode in the image.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=2,column=0,columnspan=2)
-	L4=Label(top2,text="3.From the image gallery,select the image to be encoded from drop down.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=3,column=0,columnspan=2)
-	L5=Label(top2,text="4.Click the Encode button,which will then return a new encoded image.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=4,column=0,columnspan=2)
+	
+	L1=Label(top2,text="GUIDELINES FOR THE PROJECT",bg="#02001c",fg="deepskyblue",font=(("Arial",20,"bold italic"))).grid(row=0,column=0,columnspan=2)
+	L2=Label(top2,text="1.Select encoding button for encoding the data or decoding button for decoding.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=1,column=0,columnspan=2)
+	L3=Label(top2,text="2.If you select encoding, select the button according to your choice.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=2,column=0,columnspan=2)
+	L4=Label(top2,text="3.You can enter the text directly or select a text document containing data.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=3,column=0,columnspan=2)
+	L5=Label(top2,text="4.Select image from the images folder to encode data into the image.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=4,column=0,columnspan=2)
 	L6=Label(top2,text="5.If you select decoding,select the image to be decoded from the image folder",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=5,column=0,columnspan=2)
-	L5=Label(top2,text="4.On clicking the decode button,a new text file is generated containing the message.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=6,column=0,columnspan=2)
-	B1=Button(top2,text="Encoding",bg="whitesmoke",fg="#02001c",command=encoding).grid(row=7,column=0,pady=10,sticky=E)
-	B2=Button(top2,text="Decoding",bg="whitesmoke",fg="#02001c",command=decoding).grid(row=7,column=1,padx=5,pady=10,sticky=W)
-
+	L5=Label(top2,text="6.The decoded information is obtained in a text file present in the same folder.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=6,column=0,columnspan=2)
+	
+	B1=Button(top2,text="Encoding",bg="gold",fg="#02001c",command=encoding).grid(row=7,column=0,pady=10,sticky=E)
+	B2=Button(top2,text="Decoding",bg="gold",fg="#02001c",command=decoding).grid(row=7,column=1,padx=5,pady=10,sticky=W)
 
 def home():
 	global img 
-	img=ImageTk.PhotoImage(Image.open("D:/COLLEGE SEM 4/PYTHON LAB/Final Mip/sample images/st.jpeg"))
-	img_label=Label(root,image=img,width=550,height=400)
+	img=ImageTk.PhotoImage(Image.open("sample images/saved1.png"))
+	img_label=Label(root,image=img,width=500,height=324)
 	img_label.grid(row=0,column=0)
 	
-	s1=Label(root,text="OSTPL PROJECT",bg="#02001c",fg="whitesmoke",font=(("Arial",14,"bold underline")))
-	s2=Label(root,text="TOPIC: IMAGE STEGANOGRAPHY",bg="#02001c",fg="whitesmoke",font=(("Arial",14,"bold underline")))
-	s3=Label(root,text="GROUP MEMBERS",bg="#02001c",fg="whitesmoke",font=(("Arial",14,"underline")))
+	s1=Label(root,text="OSTPL PROJECT",bg="#02001c",fg="gold",font=(("Arial",16,"bold italic")))
+	s2=Label(root,text="IMAGE STEGANOGRAPHY",bg="#02001c",fg="deepskyblue",font=(("Arial",16,"bold  italic")))
+	s3=Label(root,text="GROUP MEMBERS",bg="#02001c",fg="salmon",font=(("Arial",14,"underline")))
 	s4=Label(root,text="Ms. RIYA TASGAONKAR-1811122",bg="#02001c",fg="whitesmoke",font=(("Arial",14)))
 	s5=Label(root,text="Mr. ANKIT THAKKER-1811123",bg="#02001c",fg="whitesmoke",font=(("Arial",14)))
 	s6=Label(root,text="Mr .NIKHIL NAMBOODIRI-1811126",bg="#02001c",fg="whitesmoke",font=(("Arial",14)))
-	B=Button(root,text="Guidelines for the project",bg="whitesmoke",fg="#02001c",command=guid)
+	B=Button(root,text="Guidelines for the project",bg="greenyellow",fg="#02001c",command=guid)
 	
 	s1.grid(row=1,column=0,pady=10)
 	s2.grid(row=2,column=0,pady=10)
@@ -212,14 +198,11 @@ def home():
 	s5.grid(row=5,column=0)
 	s6.grid(row=6,column=0)
 	B.grid(row=7,column=0,pady=10)
-	
+
 root=Tk()
 root.title("OSTPL PROJECT")
 root.config(bg="#02001c")
-root.geometry('555x650+400+30')
-
+root.geometry('505x600+400+30')
 home()
 
 root.mainloop()
-
-

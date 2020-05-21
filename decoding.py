@@ -36,14 +36,12 @@ def decode(img_path):
 			if strn!='<RNA? ':
 				return False
 		ascstr=get_ascii(i,newlist)
-		#print(ascstr)
 		ascstr=BinaryToDecimal(ascstr)
 		ch=chr(ascstr)
 		strn=strn+ch
 		i+=1
 	strn=strn[6:]
 	strn=strn[0:-6]
-	#s=strn
 	l=[]
 	l.insert(0,'True')
 	l.insert(1,strn)
