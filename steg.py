@@ -11,6 +11,25 @@ flag=False
 statement=''
 path=0
 
+def test(cw):
+	def goback():
+		cw.deiconify()
+		newTop.withdraw()
+	cw.withdraw()
+	newTop=Toplevel(bg="#02001c")
+	newTop.geometry("400x210+500+300")
+	lab=Label(newTop,text="Enter the keywords separated by space",bg="#02001c",fg="gold")
+	getword=Entry(newTop,width=45,relief="sunken")
+	btnFolder=Button(newTop,text="Select folder to save images",bg="deepskyblue",fg="#02001c")
+	btn=Button(newTop,text="Search and save",bg="deepskyblue",fg="#02001c")
+	btnback=Button(newTop,text="Back",bg="deepskyblue",fg="#02001c",command=goback)
+	lab.pack(pady=2)
+	getword.pack(pady=2)
+	btnFolder.pack(pady=10)
+	btn.pack(pady=10)
+	btnback.pack(pady=10)
+	getword.focus()
+	
 def click():
 	global top3, statement,img_P,path, top1_50
 	if path==0:
@@ -23,14 +42,16 @@ def click():
 		top3.withdraw()
 	top1_50.withdraw()
 	top3=Toplevel(bg="#02001c")
-	top3.geometry("400x180+500+300")
+	top3.geometry("400x230+500+300")
 	container = Frame(top3, bg='#02001c')  
 	container.grid(row=0, column=0,padx=30,pady=30)    
 	l3=Label(container,text="Select the image in which you wish to encode your data",bg="#02001c",fg="gold")
 	b3=Button(container,text="Choose the files",bg="deepskyblue",fg="#02001c",borderwidth=4,relief=RAISED,command=cdi,width=15)
 	b4=Button(container,text="Back",bg="deepskyblue",fg="#02001c",borderwidth=4,relief=RAISED,command=goback,width=15)
+	b5=Button(container,text="Advanced",bg="deepskyblue",fg="#02001c",borderwidth=4,relief=RAISED,command=lambda: test(top3),width=15)
 	l3.grid(pady=10, padx=20)
 	b3.grid(pady=10, padx=20)
+	b5.grid(pady=10, padx=20)
 	b4.grid(pady=10,padx=20)
 
 def read(p):
@@ -86,7 +107,7 @@ def line():
 	l.grid(row=0,column=0)
 	l.config(font=("Arial", 10))
 	e=Entry(container,width=45,relief="sunken")
-	e.grid(row=0,column=1,columnspan=3)
+	e.grid(row=0,column=1,columnspan=3,pady=3)
 	b=Button(top1_50,text="Select image",bg="deepskyblue",fg="#02001c",command=click).grid(row=1,column=0)
 	b1=Button(top1_50,text="Back",bg="deepskyblue",fg="#02001c",command=goback).grid(row=3,column=0,pady=10)
 
