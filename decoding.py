@@ -34,7 +34,7 @@ def decode(img_path):
 			break
 		if len(strn)==6:
 			if strn!='<RNA? ':
-				return False
+				return [False]
 		ascstr=get_ascii(i,newlist)
 		ascstr=BinaryToDecimal(ascstr)
 		ch=chr(ascstr)

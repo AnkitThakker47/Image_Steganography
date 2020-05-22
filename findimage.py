@@ -26,10 +26,10 @@ try:
 			else:
 				pass
 
-	def getImages(words,folder=os.getcwd()):
+	def getImages(words,num,folder=os.getcwd()):
 		a1 = "https://pixabay.com/api/?key=16344627-110e29474f27c28a4a9923a6a&q="
 		a2 = '+'.join(words.split(' '))
-		a3 = "&safesearch=true&order=popular"
+		a3 = "&safesearch=true&order=popular&per_page="+str(num)
 		res = requests.get(a1+a2+a3)
 		data = res.json()
 		storeImages(data['hits'],folder)

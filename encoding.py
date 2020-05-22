@@ -33,10 +33,10 @@ def encode(statement, image_path):
 	extension = image_path[imp + 1:]
 	if extension.lower() != 'jpg' and extension.lower() != 'png':
 		messagebox.showerror("ERROR","Invalid file type")
-		exit()	
+		#exit()	
 	elif not os.path.exists(image_path):
 		messagebox.showerror("ERROR","File does not exists")
-		exit()
+		#exit()
 	else:
 		new_file_path = image_path[0:imp]+'1.'+'png'
 	image = Image.open(image_path,'r')
