@@ -284,10 +284,11 @@ def guid():
 	L7=Label(top2,text="6.The decoded information is obtained in a text file present in the same folder.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=6,column=0,columnspan=2)
 	L8=Label(top2,text="7.Use the advanced button to search images based on keywords",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=7,column=0,columnspan=2)
 	L9=Label(top2,text="8.Please wait for pop up after choosing image file since big image file might take time to process.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=8,column=0,columnspan=2)
+	L10=Label(top2,text="9.Number of images should be between 3 and 200 andif no value is entered the default value is 20.",bg="#02001c",fg="whitesmoke",font=(("Arial",13))).grid(row=9,column=0,columnspan=2)
 
-	B1=Button(top2,text="Encoding",bg="gold",fg="#02001c",borderwidth=4,relief=RAISED,command=encoding).grid(row=9,column=0,pady=10, sticky=E)
-	B2=Button(top2,text="Decoding",bg="gold",fg="#02001c",borderwidth=4,relief=RAISED,command=decoding).grid(row=9,column=1,padx=5,pady=10,sticky=W)
-	B3=Button(top2,text="Back",bg="salmon",fg="#02001c",borderwidth=4,relief=RAISED,command=goback).grid(row=9,column=2,padx=5,pady=10,sticky=N)
+	B1=Button(top2,text="Encoding",bg="gold",fg="#02001c",borderwidth=4,relief=RAISED,command=encoding).grid(row=10,column=0,pady=10, sticky=E)
+	B2=Button(top2,text="Decoding",bg="gold",fg="#02001c",borderwidth=4,relief=RAISED,command=decoding).grid(row=10,column=1,padx=5,pady=10,sticky=W)
+	B3=Button(top2,text="Back",bg="salmon",fg="#02001c",borderwidth=4,relief=RAISED,command=goback).grid(row=10,column=2,padx=5,pady=10,sticky=N)
 	top2.protocol("WM_DELETE_WINDOW",exit)
 
 def home():
