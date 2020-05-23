@@ -1,2 +1,0 @@
-#excluding .exe files
-*.exe
