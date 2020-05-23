@@ -1,3 +1,3 @@
 # Image_Steganography
-A project for college
-Using the pillow for reading image pixels and also Tkinter for UX
+A College project for OSTPL
+To run the code download all files and run the file steg.py
