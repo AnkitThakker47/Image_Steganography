@@ -1,7 +1,5 @@
 import os
 import requests
-import socket
-import random
 from tkinter import *
 from tkinter.messagebox import *
 
