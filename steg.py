@@ -7,6 +7,7 @@ import findimage
 import os
 import encoding as ec
 import decoding as dec
+import socket
 
 flag=False
 statement=''
@@ -22,24 +23,31 @@ def select_dir():
 
 def fetchImages(words,num_of_images):
 	global store_dir
-	num = 20
-	if words=='':
-		messagebox.showerror("ERROR","Please enter words to be searched")
-		return
-	if num_of_images == '':
-		num_of_images=20
-	elif num_of_images.isalpha():
-		messagebox.showerror("ERROR","Digits Only Please")
-		return
-	elif int(num_of_images) < 3 or int(num_of_images) > 200:
-		messagebox.showerror("ERROR","The number of images suould be between 3 - 200")
-		return
-	messagebox.showinfo("MESSAGE","Please wait! Pop up will appear once it is finished")
-	num = int(num_of_images)
-	if store_dir == '':
-		findimage.getImages(words,num_of_images)
+	try:
+		socket.create_connection(("www.google.com",80))
+	except socket.gaierror as e:
+		messagebox.showerror("ERROR","Please check your internet connection")
+	except Exception as e:
+		messagebox.showerror("ERROR",e)
 	else:
-		findimage.getImages(words,num_of_images,store_dir)
+		num = 20
+		if words=='':
+			messagebox.showerror("ERROR","Please enter words to be searched")
+			return
+		if num_of_images == '':
+			num_of_images=20
+		elif num_of_images.isalpha():
+			messagebox.showerror("ERROR","Digits Only Please")
+			return
+		elif int(num_of_images) < 3 or int(num_of_images) > 200:
+			messagebox.showerror("ERROR","The number of images suould be between 3 - 200")
+			return
+		messagebox.showinfo("MESSAGE","Please wait! Pop up will appear once it is finished")
+		num = int(num_of_images)
+		if store_dir == '':
+			findimage.getImages(words,num_of_images)
+		else:
+			findimage.getImages(words,num_of_images,store_dir)
 
 def test(cw):
 	def goback():
