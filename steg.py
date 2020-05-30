@@ -214,7 +214,7 @@ def encoding():
 def deci():
 	global var
 	if var=='':
-		messagebox.showerror("ERROR","Select an Imange")
+		messagebox.showerror("ERROR","Select an Image")
 	else:
 		d(var)
 		
@@ -235,7 +235,7 @@ def d(v):
 				f=open(new_file_path,'w')
 				f.write(l1[1])
 				f.close()
-				response=messagebox.showinfo("Info","Image decoded successfully, New text file path: "+new_file_path+".txt")
+				response=messagebox.showinfo("Info","Image decoded successfully, New text file path: "+new_file_path)
 				if response =="ok":
 					r=messagebox.askyesno("Quit","Do you wish to continue?")
 					if r==0:
